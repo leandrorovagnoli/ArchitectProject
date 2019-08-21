@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <UserSecretsId>aspnet-ArchitectProject.UI.Web-1E1663C3-2C5B-4DB7-90CB-77A64CD7CA5F</UserSecretsId>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\ArchitectProject.ApplicationCore\ArchitectProject.ApplicationCore.csproj" />
+    <ProjectReference Include="..\ArchitectProject.Infrastructure\ArchitectProject.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
