@@ -20,18 +20,17 @@ namespace ArchitectProject.Infrastructure.EntityConfig
                 .IsRequired();
 
             builder.Property(x => x.IsActive)
-                .HasDefaultValue(true)
                 .IsRequired();
 
             builder.HasMany(x => x.Photos)
                 .WithOne(x => x.GalleryItem)
                 .HasForeignKey(x => x.GalleryItemId)
-                .HasPrincipalKey(x=>x.Id)
+                .HasPrincipalKey(x => x.Id)
                 .IsRequired();
 
             builder.HasOne(x => x.Menu)
                 .WithMany(x => x.GalleryItems)
-                .HasForeignKey(x=>x.MenuId);
+                .HasForeignKey(x => x.MenuId);
 
             builder.Property(x => x.PublishDate)
                .HasColumnType("datetime")

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using ArchitectProject.UI.Web.Areas.Admin.Data.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -39,21 +40,31 @@ namespace ArchitectProject.UI.Web.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "O campo {0} é obrigatório.")]
+            [StringLength(250, ErrorMessage = "O campo '{0}' deve conter pelo menos {2} e no máximo {1} caracteres.", MinimumLength = 4)]
+            [Display(Name = "Nome")]
+            public string Name { get; set; }
+
+            [Required(ErrorMessage = "O campo '{0}' é obrigatório.")]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "O campo '{0}' é obrigatório.")]
+            [StringLength(100, ErrorMessage = "O campo {0} deve conter pelo menos {2} e no máximo {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Senha")]
             public string Password { get; set; }
 
+            [Required(ErrorMessage = "O campo '{0}' é obrigatório.")]
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Confirme a senha")]
+            [Compare("Password", ErrorMessage = "Os campos de senha devem ser iguais.")]
             public string ConfirmPassword { get; set; }
+
+            [Display(Name = "Termos")]
+            [IsTrueRequired(ErrorMessage = "Você precisa concordar com os termos para se registrar.")]
+            public bool IsAgree { get; set; }
         }
 
         public void OnGet(string returnUrl = null)

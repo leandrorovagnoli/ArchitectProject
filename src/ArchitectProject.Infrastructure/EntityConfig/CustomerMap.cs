@@ -19,7 +19,7 @@ namespace ArchitectProject.Infrastructure.EntityConfig
                 .HasColumnType("varchar(150)")
                 .IsRequired();
 
-            builder.Property(x => x.LastName)
+            builder.Property(x => x.Surname)
                 .HasColumnType("varchar(150)")
                 .IsRequired();
 

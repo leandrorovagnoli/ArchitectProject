@@ -1,0 +1,160 @@
+﻿@model ArchitectProject.UI.Web.Areas.Admin.Models.AdminViewModel
+
+@section Styles {
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+}
+
+@section Scripts {
+    <!-- InputMask -->
+    <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+
+    <!-- Page script -->
+    <script>
+        $(function () {
+            $('#tbMenus').DataTable({
+                "language": {
+                    "sEmptyTable": "Nenhum registro encontrado",
+                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "_MENU_ resultados por página",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "sSearch": "Pesquisar",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
+                }
+            });
+        });
+    </script>
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>Gerenciamento de Menus</h1>
+    <br />
+    <ol class="breadcrumb">
+        <li><a href="/Admin"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>Gerenciamento</li>
+        <li class="active">Menu</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <form asp-controller="Admin" asp-action="SaveOrUpdateMenu" method="post">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Cadastrar novo Menu</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input asp-for="@Model.Menu.Id" hidden="hidden">
+                            <label>Nome</label>
+                            <input type="text" class="form-control" asp-for="@Model.Menu.Name">
+                            <span asp-validation-for="@Model.Menu.Name"></span>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Submenu</label>
+                            @{
+                                //When editting, remove the actual menu from the list. You can't put the same menu in the submenu.
+                                if (Model.IsEditMode && Model.Menu.MenuId != null)
+                                {
+                                    Model.MenuDropDownList.Remove(Model.MenuList.FirstOrDefault(x => x.Id == Model.Menu.Id));
+                                }
+                            }
+                            <select class="form-control" asp-for="@Model.Menu.MenuId" asp-items="@(new SelectList(Model.MenuDropDownList, "Id", "Name"))">
+                                <option value="">Nenhum</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <button class="btn btn-default" type="button" onclick="location.replace('/Admin/Gerenciar/Menu');">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+        <!-- /.box -->
+    </form>
+
+
+    <!-- Main content -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Lista de Menus</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="tbMenus" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Menu.Name)
+
+
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Menu.SubMenu)
+                                </th>
+                                <th>
+                                    Ações
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.MenuList)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @(item.MenuId != null ? Model.MenuList.FirstOrDefault(x => x.Id == item.MenuId).Name : "")
+                                    </td>
+                                    <td style="width: 5% !important">
+                                        <a class="fa fa-fw fa-pencil" asp-controller="Admin" asp-action="EditMenu" asp-route-id="@item.Id"></a> |
+                                        <a class="fa fa-fw fa-trash-o" asp-controller="Admin" asp-action="DeleteMenu" asp-route-id="@item.Id"></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+</section>

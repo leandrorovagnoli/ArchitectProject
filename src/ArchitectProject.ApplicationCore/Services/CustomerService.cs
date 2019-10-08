@@ -43,6 +43,13 @@ namespace ArchitectProject.ApplicationCore.Services
 
         public void Update(Customer customer)
         {
+            //var customerDb = _customerRepository.GetById(customer.Id);
+            //customerDb.Name = customer.Name;
+            //customerDb.LastName = customer.LastName;
+            //customerDb.Email = customer.Email;
+            //customerDb.Phone = customer.Phone;
+
+            //_customerRepository.Update(customerDb);
             _customerRepository.Update(customer);
         }
     }

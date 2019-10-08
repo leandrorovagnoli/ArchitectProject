@@ -27,18 +27,21 @@ namespace ArchitectProject.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(150);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("varchar(150)")
+                        .HasMaxLength(120);
 
                     b.Property<string>("Phone")
                         .HasColumnType("varchar(15)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("varchar(150)")
+                        .HasMaxLength(120);
 
                     b.HasKey("Id");
 
@@ -55,10 +58,7 @@ namespace ArchitectProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(3000)");
 
-                    b.Property<bool?>("IsActive")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
+                    b.Property<bool>("IsActive");
 
                     b.Property<int>("MenuId");
 
@@ -67,7 +67,8 @@ namespace ArchitectProject.Infrastructure.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("varchar(200)")
+                        .HasMaxLength(250);
 
                     b.HasKey("Id");
 
@@ -86,7 +87,8 @@ namespace ArchitectProject.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(60);
 
                     b.HasKey("Id");
 

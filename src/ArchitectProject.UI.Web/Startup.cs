@@ -13,6 +13,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ArchitectProject.Infrastructure.Data;
+using ArchitectProject.UI.Web.Services.Profile;
+using ArchitectProject.ApplicationCore.Interfaces.Service;
+using ArchitectProject.ApplicationCore.Services;
+using ArchitectProject.ApplicationCore.Interfaces.Repository;
+using ArchitectProject.Infrastructure.Repository;
+using ArchitectProject.UI.Web.Areas.Admin.Models;
+using ArchitectProject.ApplicationCore.Entities;
 
 namespace ArchitectProject.UI.Web
 {
@@ -49,6 +56,15 @@ namespace ArchitectProject.UI.Web
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddScoped<ProfileManager>();
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IMenuService, MenuService>();
+            services.AddScoped<IMenuRepository, MenuRepository>();
+            services.AddScoped<IGalleryItemService, GalleryItemService>();
+            services.AddScoped<IGalleryItemRepository, GalleryItemRepository>();
+            services.AddScoped<AdminViewModel>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
