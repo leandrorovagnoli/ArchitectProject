@@ -293,10 +293,20 @@ namespace ArchitectProject.UI.Web.Areas.Admin.Controllers
         [Route("Gerenciar/Galeria")]
         public ActionResult Gallery()
         {
-            _adminViewModel.GalleryItem = new GalleryItem() { IsActive = true };
+            ClearGalleryState();
             UpdateGalleries(_adminViewModel);
 
             return View("Gallery", _adminViewModel);
+        }
+
+        /// <summary>
+        /// Clear the current state of the Gallery.
+        /// </summary>
+        [Route("Gerenciar/Galeria/LiberarEstado")]
+        public void ClearGalleryState()
+        {
+            ModelState.Clear();
+            _adminViewModel.GalleryItem = new GalleryItem() { IsActive = true };
         }
 
         /// <summary>
@@ -341,10 +351,10 @@ namespace ArchitectProject.UI.Web.Areas.Admin.Controllers
                 Alert("Informe ao administrador do sistema.", Enum.NotificationType.error);
             }
 
-            ModelState.Clear();
+            ClearGalleryState();
             UpdateGalleries(_adminViewModel);
 
-            return RedirectToAction("Gallery", "Admin");
+            return View("Gallery", _adminViewModel);
         }
 
         /// <summary>
@@ -367,7 +377,7 @@ namespace ArchitectProject.UI.Web.Areas.Admin.Controllers
                 Alert("Ocorreu um erro! Informe o administrador do sistema.", Enum.NotificationType.error);
             }
 
-            ModelState.Clear();
+            ClearGalleryState();
             UpdateGalleries(_adminViewModel);
 
             return View("Gallery", _adminViewModel);
