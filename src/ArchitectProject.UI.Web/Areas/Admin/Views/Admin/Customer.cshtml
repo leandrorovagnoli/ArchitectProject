@@ -2,14 +2,16 @@
 
 @section Styles {
     <!-- DataTables -->
-    <link rel="stylesheet" href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+    
 }
 
 @section Scripts {
     <!-- InputMask -->
     <script src="~/bower_components/inputmask/dist/jquery.inputmask.bundle.js"></script>
     <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
 
     <!-- Page script -->
     <script>
@@ -20,6 +22,7 @@
 
         $(function () {
             $('#tbCustomers').DataTable({
+                responsive: true,
                 "language": {
                     "sEmptyTable": "Nenhum registro encontrado",
                     "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -133,7 +136,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table id="tbCustomers" class="table table-bordered table-striped">
+                    <table id="tbCustomers" class="table table-bordered table-striped" style="width: 100%">
                         <thead>
                             <tr>
                                 <th>
@@ -156,27 +159,27 @@
                         <tbody>
                             @foreach (var item in Model.Customers)
                             {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Surname)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Email)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Phone)
-                                    </td>
-                                    <td style="width: 5% !important">
-                                        <a class="fa fa-fw fa-pencil" asp-controller="Admin" asp-action="EditCustomer" asp-route-id="@item.Id"></a> |
-                                        <a class="fa fa-fw fa-trash-o" asp-controller="Admin" asp-action="DeleteCustomer" asp-route-id="@item.Id"></a>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Surname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Phone)
+                                </td>
+                                <td style="width: 5% !important">
+                                    <a class="fa fa-fw fa-pencil" asp-controller="Admin" asp-action="EditCustomer" asp-route-id="@item.Id"></a> |
+                                    <a class="fa fa-fw fa-trash-o" asp-controller="Admin" asp-action="DeleteCustomer" asp-route-id="@item.Id"></a>
+                                </td>
+                            </tr>
                             }
                         </tbody>
-                        @*<tfoot>
+                        <tfoot>
                                 <tr>
                                     <th>
                                         @Html.DisplayNameFor(model => model.Customer.Name)
@@ -194,7 +197,7 @@
                                         Ações
                                     </th>
                                 </tr>
-                            </tfoot>*@
+                            </tfoot>
                     </table>
                 </div>
                 <!-- /.box-body -->

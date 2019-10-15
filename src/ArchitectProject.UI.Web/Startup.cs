@@ -20,6 +20,7 @@ using ArchitectProject.ApplicationCore.Interfaces.Repository;
 using ArchitectProject.Infrastructure.Repository;
 using ArchitectProject.UI.Web.Areas.Admin.Models;
 using ArchitectProject.ApplicationCore.Entities;
+using ArchitectProject.UI.Web.Areas.Admin.Data;
 
 namespace ArchitectProject.UI.Web
 {
@@ -42,11 +43,7 @@ namespace ArchitectProject.UI.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            //services.AddDefaultIdentity<IdentityUser>()
-            //    .AddDefaultUI(UIFramework.Bootstrap4)
-            //    .AddEntityFrameworkStores<APContext>();
-
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>(options => options.Stores.MaxLengthForKeys = 128)
                 .AddEntityFrameworkStores<APContext>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI(UIFramework.Bootstrap4);
@@ -54,6 +51,14 @@ namespace ArchitectProject.UI.Web
             services.AddDbContext<APContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+            //services.AddDbContext<APContext>(options =>
+            //    options.UseMySql(
+            //        Configuration.GetConnectionString("MySqlConnectionLocal")));
+
+            //services.AddDbContext<APContext>(options =>
+            //    options.UseMySql(
+            //        Configuration.GetConnectionString("MySqlConnection")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -68,7 +73,9 @@ namespace ArchitectProject.UI.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
+            APContext context, UserManager<ApplicationUser> userManager, 
+            RoleManager<ApplicationRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -98,6 +105,8 @@ namespace ArchitectProject.UI.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            DummyData.Initialize(context, userManager, roleManager).Wait();
         }
     }
 }

@@ -19,14 +19,14 @@ namespace ArchitectProject.UI.Web.Areas.Admin.Controllers
     [Authorize]
     public class AdminController : BaseController
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<AdminController> _logger;
         private readonly ICustomerService _customerService;
         private readonly IMenuService _menuService;
         private readonly IGalleryItemService _galleryItemService;
         private AdminViewModel _adminViewModel;
 
-        public AdminController(SignInManager<IdentityUser> signInManager, ILogger<AdminController> logger,
+        public AdminController(SignInManager<ApplicationUser> signInManager, ILogger<AdminController> logger,
             ICustomerService customerService, IMenuService menuService, IGalleryItemService galleryItemService,
             AdminViewModel adminViewModel)
         {

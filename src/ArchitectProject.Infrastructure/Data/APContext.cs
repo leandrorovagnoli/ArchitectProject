@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ArchitectProject.Infrastructure.Data
 {
-    public class APContext : IdentityDbContext 
+    public class APContext : IdentityDbContext<ApplicationUser, ApplicationRole, string> 
     {
         public APContext(DbContextOptions<APContext> options) : base(options)
         {
@@ -26,6 +26,8 @@ namespace ArchitectProject.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new GalleryItemMap());
             modelBuilder.ApplyConfiguration(new MenuMap());
             modelBuilder.ApplyConfiguration(new PhotoMap());
+            modelBuilder.ApplyConfiguration(new ApplicationRoleMap());
+            modelBuilder.ApplyConfiguration(new ApplicationUserMap());
 
             base.OnModelCreating(modelBuilder);
         }

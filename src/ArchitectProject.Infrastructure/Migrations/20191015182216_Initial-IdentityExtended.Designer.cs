@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArchitectProject.Infrastructure.Migrations
 {
     [DbContext(typeof(APContext))]
-    [Migration("20190923232619_CustomerFieldUpdate")]
-    partial class CustomerFieldUpdate
+    [Migration("20191015182216_Initial-IdentityExtended")]
+    partial class InitialIdentityExtended
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,117 @@ namespace ArchitectProject.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ArchitectProject.ApplicationCore.Entities.ApplicationRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles");
+                });
+
+            modelBuilder.Entity("ArchitectProject.ApplicationCore.Entities.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AccessFailedCount");
+
+                    b.Property<string>("AvatarImage")
+                        .HasColumnType("varchar(250)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("Country")
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("varchar(250)");
+
+                    b.Property<bool>("LockoutEnabled");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("varchar(8)");
+
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("SecurityStamp");
+
+                    b.Property<string>("State")
+                        .HasColumnType("varchar(70)");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("varchar(250)");
+
+                    b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
+                });
 
             modelBuilder.Entity("ArchitectProject.ApplicationCore.Entities.Customer", b =>
                 {
@@ -60,10 +171,7 @@ namespace ArchitectProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(3000)");
 
-                    b.Property<bool?>("IsActive")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
+                    b.Property<bool>("IsActive");
 
                     b.Property<int>("MenuId");
 
@@ -72,7 +180,8 @@ namespace ArchitectProject.Infrastructure.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("varchar(200)")
+                        .HasMaxLength(250);
 
                     b.HasKey("Id");
 
@@ -91,7 +200,8 @@ namespace ArchitectProject.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(60);
 
                     b.HasKey("Id");
 
@@ -124,30 +234,6 @@ namespace ArchitectProject.Infrastructure.Migrations
                     b.ToTable("Photo");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -166,57 +252,6 @@ namespace ArchitectProject.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed");
-
-                    b.Property<bool>("LockoutEnabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("SecurityStamp");
-
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -241,9 +276,11 @@ namespace ArchitectProject.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("ProviderKey");
+                    b.Property<string>("ProviderKey")
+                        .HasMaxLength(128);
 
                     b.Property<string>("ProviderDisplayName");
 
@@ -274,9 +311,11 @@ namespace ArchitectProject.Infrastructure.Migrations
                 {
                     b.Property<string>("UserId");
 
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Value");
 
@@ -310,7 +349,7 @@ namespace ArchitectProject.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
+                    b.HasOne("ArchitectProject.ApplicationCore.Entities.ApplicationRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -318,7 +357,7 @@ namespace ArchitectProject.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("ArchitectProject.ApplicationCore.Entities.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -326,7 +365,7 @@ namespace ArchitectProject.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("ArchitectProject.ApplicationCore.Entities.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -334,12 +373,12 @@ namespace ArchitectProject.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
+                    b.HasOne("ArchitectProject.ApplicationCore.Entities.ApplicationRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("ArchitectProject.ApplicationCore.Entities.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -347,7 +386,7 @@ namespace ArchitectProject.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("ArchitectProject.ApplicationCore.Entities.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

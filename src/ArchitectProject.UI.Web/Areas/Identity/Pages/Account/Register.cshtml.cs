@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 
 namespace ArchitectProject.UI.Web.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
