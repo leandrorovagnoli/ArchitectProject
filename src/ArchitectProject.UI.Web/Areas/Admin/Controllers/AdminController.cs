@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace ArchitectProject.UI.Web.Areas.Admin.Controllers
@@ -24,11 +25,12 @@ namespace ArchitectProject.UI.Web.Areas.Admin.Controllers
         private readonly ICustomerService _customerService;
         private readonly IMenuService _menuService;
         private readonly IGalleryItemService _galleryItemService;
+        private readonly IApplicationUserService _applicationUserService;
         private AdminViewModel _adminViewModel;
 
         public AdminController(SignInManager<ApplicationUser> signInManager, ILogger<AdminController> logger,
             ICustomerService customerService, IMenuService menuService, IGalleryItemService galleryItemService,
-            AdminViewModel adminViewModel)
+            AdminViewModel adminViewModel, IApplicationUserService applicationUserService)
         {
             _signInManager = signInManager;
             _logger = logger;
@@ -36,6 +38,7 @@ namespace ArchitectProject.UI.Web.Areas.Admin.Controllers
             _menuService = menuService;
             _galleryItemService = galleryItemService;
             _adminViewModel = adminViewModel;
+            _applicationUserService = applicationUserService;
         }
 
         public ActionResult Index()
@@ -404,6 +407,117 @@ namespace ArchitectProject.UI.Web.Areas.Admin.Controllers
             UpdateGalleries(_adminViewModel);
 
             return View("Gallery", _adminViewModel);
+        }
+
+        #endregion
+
+        #region User
+
+        /// <summary>
+        /// Call the User main page with all users listed. 
+        /// </summary>
+        /// <returns></returns>
+        [Route("Administracao/Usuario")]
+        public new ActionResult User()
+        {
+            UpdateUsers(_adminViewModel);
+
+            return View("User", _adminViewModel);
+        }
+
+        /// <summary>
+        /// Gets all users from DB and updates its viewmodel.
+        /// </summary>
+        /// <returns>Return all Users from DB</returns>
+        [Route("Administracao/Usuario/ObterUsuarios")]
+        public ICollection<ApplicationUser> UpdateUsers(AdminViewModel adminViewModel)
+        {
+            return adminViewModel.Users = _applicationUserService.GetAll().ToList();
+        }
+
+        /// <summary>
+        /// Save a customer (HttpPost) from view.
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        [Route("Administracao/Usuario/SalvarUsuario")]
+        [HttpPost]
+        public ActionResult SaveOrUpdateUser([Bind("Id,FirstName,LastName,UserName,Email,RegistrationDate")] ApplicationUser user)
+        {
+            try
+            {
+                if (user != null && user.Id == null)
+                {
+                    user.RegistrationDate = DateTime.Now;
+                    _applicationUserService.Add(user);
+                    
+                    Alert("Usuário adicionado com sucesso!", Enum.NotificationType.success);
+                }
+                else
+                {
+                    _applicationUserService.Update(user);
+
+                    Alert("Usuário atualizado com sucesso!", Enum.NotificationType.success);
+
+                }
+            }
+            catch (Exception)
+            {
+                Alert("Informe ao administrador do sistema.", Enum.NotificationType.error);
+            }
+
+            ModelState.Clear();
+            UpdateUsers(_adminViewModel);
+
+            return View("User", _adminViewModel);
+        }
+
+        /// <summary>
+        /// Delete a user from grid.
+        /// </summary>
+        /// <param name="id">User Id to be deleted.</param>
+        /// <returns></returns>
+        [Route("Administracao/Usuario/ApagarUsuario")]
+        public ActionResult DeleteUser(string id)
+        {
+            try
+            {
+                var user = _applicationUserService.Find(x => x.Id.Equals(id)).Single();
+                _applicationUserService.Delete(user);
+
+                Alert("Usuário removido com sucesso!", Enum.NotificationType.success);
+            }
+            catch (Exception)
+            {
+                Alert("Ocorreu um erro! Informe o administrador do sistema.", Enum.NotificationType.error);
+            }
+
+            ModelState.Clear();
+            UpdateUsers(_adminViewModel);
+
+            return View("User", _adminViewModel);
+        }
+
+        /// <summary>
+        /// Edit a user from grid.
+        /// </summary>
+        /// <param name="id">User Id to be edited.</param>
+        /// <returns></returns>
+        [Route("Administracao/Usuario/EditarUsuario")]
+        public ActionResult EditUser(string id)
+        {
+            try
+            {
+                _adminViewModel.User = _applicationUserService.GetById(id);
+            }
+            catch (Exception)
+            {
+                Alert("Ocorreu um erro! Informe o administrador do sistema.", Enum.NotificationType.error);
+            }
+
+            UpdateUsers(_adminViewModel);
+
+            return View("User", _adminViewModel);
         }
 
         #endregion

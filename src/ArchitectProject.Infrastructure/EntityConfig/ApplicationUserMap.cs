@@ -11,6 +11,8 @@ namespace ArchitectProject.Infrastructure.EntityConfig
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
+            builder.Property(c => c.Id).HasColumnName("ID").IsRequired();
+
             builder.Property(x => x.AvatarImage)
                 .HasColumnType("varchar(250)");
 

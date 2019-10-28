@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArchitectProject.Infrastructure.Migrations
 {
     [DbContext(typeof(APContext))]
-    [Migration("20191015182216_Initial-IdentityExtended")]
+    [Migration("20191028165800_InitialIdentityExtended")]
     partial class InitialIdentityExtended
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,7 +55,8 @@ namespace ArchitectProject.Infrastructure.Migrations
             modelBuilder.Entity("ArchitectProject.ApplicationCore.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ID");
 
                     b.Property<int>("AccessFailedCount");
 

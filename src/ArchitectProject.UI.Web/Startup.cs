@@ -69,6 +69,8 @@ namespace ArchitectProject.UI.Web
             services.AddScoped<IMenuRepository, MenuRepository>();
             services.AddScoped<IGalleryItemService, GalleryItemService>();
             services.AddScoped<IGalleryItemRepository, GalleryItemRepository>();
+            services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddScoped<IApplicationUserService, ApplicationUserService>();
             services.AddScoped<AdminViewModel>();
         }
 

@@ -35,7 +35,7 @@ namespace ArchitectProject.Infrastructure.Repository
             return _dbContext.Set<TEntity>().Where(predicate).AsEnumerable();
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public virtual IEnumerable<TEntity> GetAll()
         {
             return _dbContext.Set<TEntity>().AsEnumerable();
         }

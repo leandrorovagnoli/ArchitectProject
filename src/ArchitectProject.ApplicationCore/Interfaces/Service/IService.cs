@@ -7,10 +7,10 @@ namespace ArchitectProject.ApplicationCore.Interfaces.Service
 {
     public interface IService<TEntity> where TEntity : class
     {
-        TEntity Add(TEntity customer);
-        void Update(TEntity customer);
+        TEntity Add(TEntity entity);
+        void Update(TEntity entity);
         IEnumerable<TEntity> GetAll();
-        void Delete(TEntity customer);
+        void Delete(TEntity entity);
         TEntity GetById(int id);
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
     }

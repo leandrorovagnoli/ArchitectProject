@@ -17,5 +17,7 @@ namespace ArchitectProject.UI.Web.Areas.Admin.Models
         public bool IsEditMode { get; set; }
         public GalleryItem GalleryItem { get; set; }
         public ICollection<GalleryItem> GalleryList { get; set; }
+        public ApplicationUser User { get; set; }
+        public ICollection<ApplicationUser> Users { get; set; }
     }
 }
